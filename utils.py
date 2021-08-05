@@ -4,7 +4,7 @@ def new_alias(alias):
     new_cell = ""
     index = 0
     for char in alias:
-        if alias[index].isupper() and alias[index-1] not in [" ",'"',"-","."]  and index != 0:
+        if alias[index].isupper() and alias[index-1] not in [" ",'"',"-",".","I"]  and index != 0:
             new_cell += ";" + char
         else:
             new_cell += char
