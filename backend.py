@@ -1,3 +1,5 @@
+# backend.py
+
 import sqlite3
 import os
 import csv
@@ -145,8 +147,9 @@ class Database():
                         }
                         )
                     self.conn.commit()
-                except:
+                except Exception as e:
                     print(f"Cannot insert {clean_val} into alias")
+                    print(e)
 
 
     def insert_alignment(self,value):
@@ -162,8 +165,9 @@ class Database():
                     }
                     )
                 self.conn.commit()
-            except:
+            except Exception as e:
                 print(f"Cannot insert {value} into alignment")
+                print(e)
 
 
     def insert_alter_ego(self,values):
@@ -181,8 +185,9 @@ class Database():
                         }
                         )
                     self.conn.commit()
-                except:
+                except Exception as e:
                     print(f"Cannot insert {clean_val} into alter_ego")
+                    print(e)
 
 
     def insert_group(self,values):
@@ -200,8 +205,9 @@ class Database():
                         }
                         )
                     self.conn.commit()
-                except:
+                except Exception as e:
                     print(f"Cannot insert {clean_val} into group")
+                    print(e)
 
 
     def insert_hero(self,name,full_name,intel,strg,speed,durability,power,combat,align,pub,image):
@@ -233,58 +239,73 @@ class Database():
                 )
             self.conn.commit()
         except Exception as e:
-            print("insert hero:",e)
+            print(f"Cannot insert {name}, {full_name}, {intel}, {strg}, {speed},\n{durability}, {power}, {combat}, {align_id}, {pub_id} or {image} into hero:")
+            print(e)
+    
+    def insert_hero_alias(self,hero_id, aliases):
+        for alias in aliases:
+            alias_rtn = self.check_alias(alias)
+            if alias_rtn != []:
+                alias_id = alias_rtn[0][0]
+                try:
+                    self.cur.execute(
+                        """
+                        INSERT INTO Hero_alias
+                        VALUES (:hero_id, :alias_id)
+                        """,
+                        {
+                            'hero_id' : hero_id,
+                            'alias_id': alias_id
+                        }
+                        )
+                    self.conn.commit()
+                except Exception as e:
+                    print(f"Cannot insert {hero_id} or {alias_id} into hero_alias")
+                    print(e)
+
+
+    def insert_hero_alt(self,hero_id, alts):
+        for alt in alts:
+            alt_rtn = self.check_alts(alt)
+            if alt_rtn != []:
+                alt_id = alt_rtn[0][0]
+                try:
+                    self.cur.execute(
+                        """
+                        INSERT INTO Hero_alt
+                        VALUES (:hero_id, :alt_id)
+                        """,
+                        {
+                            'hero_id' : hero_id,
+                            'alt_id': alt_id
+                        }
+                        )
+                    self.conn.commit()
+                except Exception as e:
+                    print(f"Cannot insert {hero_id} or {alt_id} into hero_alt")
+                    print(e)
 
     
-    def insert_hero_alias(self,hero_id, alias_id):
-        try:
-            self.cur.execute(
-                """
-                INSERT INTO Hero_alias
-                VALUES (NULL, :hero_id, :alias_id)
-                """,
-                {
-                    'hero_id' : hero_id,
-                    'alias_id': alias_id
-                }
-                )
-            self.conn.commit()
-        except:
-            print(f"Cannot insert {hero_id} or {alias_id} into hero_alias")
-
-
-    def insert_hero_alt(self,hero_id, alt_id):
-        try:
-            self.cur.execute(
-                """
-                INSERT INTO Hero_alt
-                VALUES (NULL, :hero_id, :alt_id)
-                """,
-                {
-                    'hero_id' : hero_id,
-                    'alt_id': alt_id
-                }
-                )
-            self.conn.commit()
-        except:
-            print(f"Cannot insert {hero_id} or {alt_id} into hero_alt")
-
-    
-    def insert_hero_group(self,hero_id, group_id):
-        try:
-            self.cur.execute(
-                """
-                INSERT INTO Hero_group
-                VALUES (NULL, :hero_id, :group_id)
-                """,
-                {
-                    'hero_id' : hero_id,
-                    'alt_id': group_id
-                }
-                )
-            self.conn.commit()
-        except:
-            print(f"Cannot insert {hero_id} or {group_id} into hero_group")
+    def insert_hero_group(self,hero_id, groups):
+        for group in groups:
+            group_rtn = self.check_group(group)
+            if group_rtn != []:
+                group_id = group_rtn[0][0]
+                try:
+                    self.cur.execute(
+                        """
+                        INSERT INTO Hero_group
+                        VALUES (NULL, :hero_id, :group_id)
+                        """,
+                        {
+                            'hero_id' : hero_id,
+                            'alt_id': group_id
+                        }
+                        )
+                    self.conn.commit()
+                except Exception as e:
+                    print(f"Cannot insert {hero_id} or {group_id} into hero_group")
+                    print(e)
 
     
     def insert_publisher(self,value):
@@ -300,8 +321,10 @@ class Database():
                     }
                     )
                 self.conn.commit()
-            except:
+            except Exception as e:
                 print(f"Cannot insert {value} into publisher")
+                print(e)
+
 
     def check_alias(self,value):
         try:
@@ -316,8 +339,9 @@ class Database():
             }
             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
             print("Error checking alignments")
+            print(e)
             return False
 
 
@@ -334,8 +358,9 @@ class Database():
             }
             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
             print("Error checking alignment")
+            print(e)
             return False
 
 
@@ -352,13 +377,13 @@ class Database():
             }
             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
             print("Error checking alter_egos")
+            print(e)
             return False
 
 
     def check_group(self,value):
-        #print(value)
         try:
             self.cur.execute(
                 """
@@ -390,8 +415,9 @@ class Database():
             }
             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
             print("Error checking publisher")
+            print(e)
             return False
 
 
@@ -424,6 +450,8 @@ class Database():
                     self.insert_alias(aliases.split(";"))
                     self.insert_group(groups.split(";"))
                     self.insert_hero(name,full_name,intelligence,strength,speed,durability,power,combat,alignment,publisher,image)
+                    self.insert_hero_alias(records,aliases.split(";"))
+                    self.insert_hero_alt(records,alter_egos.split(";"))
 
 
                 records += 1
