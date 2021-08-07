@@ -422,6 +422,7 @@ class Database():
 
 
     def import_data(self,csv_file):
+
         with open(csv_file,'r') as data:
             reader = csv.reader(data)
             records = 0
@@ -456,3 +457,20 @@ class Database():
 
                 records += 1
                 print(f"{records} heroes processed.")        
+
+    
+    def get_hero_details(self):
+        try:
+            self.cur.execute(
+                """
+                SELECT name, intelligence, strength, speed, durability, power, combat, Publishers.publisher, image
+                FROM Heroes
+                JOIN Publishers
+                ON Heroes.pub_id = Publishers.pub_id
+                """
+            )
+            return self.cur.fetchall()
+        except Exception as e:
+            print("Error in retrieving record for hero_id {value}")
+            print(e)
+            return False
