@@ -5,7 +5,7 @@ import os
 import csv
 
 class Database():
-    def __init__(self,db):
+    def __init__(self,db,csv):
         
         if os.path.exists(db):
             self.conn = sqlite3.connect(db)
@@ -15,6 +15,7 @@ class Database():
             self.conn = sqlite3.connect(db)
             self.cur = self.conn.cursor()
             self.build_db()
+            self.import_data(csv)
             print("DB built")
 
 
@@ -242,6 +243,7 @@ class Database():
             print(f"Cannot insert {name}, {full_name}, {intel}, {strg}, {speed},\n{durability}, {power}, {combat}, {align_id}, {pub_id} or {image} into hero:")
             print(e)
     
+    
     def insert_hero_alias(self,hero_id, aliases):
         for alias in aliases:
             alias_rtn = self.check_alias(alias)
@@ -459,7 +461,7 @@ class Database():
                 print(f"{records} heroes processed.")        
 
     
-    def get_hero_details(self):
+    def get_details(self):
         try:
             self.cur.execute(
                 """

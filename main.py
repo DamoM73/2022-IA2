@@ -2,43 +2,29 @@
 
 from backend import Database
 from frontend import UI
-from game_elements import Card
-import random
+from game_elements import Card, Pack, Deck
 
-def create_db():
-    hero_data.import_data("super_hero.csv")
 
-def create_deck():
-    heroes = hero_data.get_hero_details()
-    deck = []
-    for hero in heroes:
-        deck.append(Card(hero))
-    return deck
+hero_data = Database("hero_py.db","super_hero.csv")
 
-def deal(pack):
-    player = []
-    deck_size = len(pack)
-    while len(pack) > deck_size/2:
-        card = random.randint(0,len(pack)-1)
-        player.append(pack.pop(card))
-    return player, pack
-
-hero_data = Database("hero_py.db")
 main_window = UI()
+pack = Pack(hero_data)
+player_deck = Deck("player")
+ai_deck = Deck("ai")
+
+
 
 #----- MAIN LOOP -----
 running = True
-deck = create_deck()
-player_hand, AI_hand = deal(deck)
-
-random.choice(player_hand).show_card()
-
-
-"""
 while running:
     response = main_window.main_menu()
+    # Deal
     if response == 1:
-        create_db()
+        pack.deal(player_deck,ai_deck)
+        player_deck.count()
+        ai_deck.count()
     elif response == 2:
+        size = main_window.pack_size_menu()
+        pack.set_size(size)
+    elif response == 9:
         running = False
-"""

@@ -1,5 +1,2 @@
-from backend import Database
-
-db = Database("hero_py.db")
-
-print(db.get_hero_details())
+x = list(range(1,10))
+print(x)
