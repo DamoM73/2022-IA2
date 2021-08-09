@@ -15,14 +15,16 @@ class Card():
 
     
     def display(self):
-        print(f"Name: {self.name}")
-        print(f"Intelligence: {self.intelligence}")
-        print(f"Strength: {self.strength}")
-        print(f"Speed: {self.speed}")
-        print(f"Durability: {self.durability}")
-        print(f"Power: {self.power}")
-        print(f"Combat: {self.combat}")
-        print(f"Publisher: {self.publisher}")
+        return(f"""
+        Name: {self.name}\n
+        Publisher: {self.publisher}\n
+        1. Intelligence: {self.intelligence}\n
+        2. Strength: {self.strength}\n
+        3. Speed: {self.speed}\n
+        4. Durability: {self.durability}\n
+        5. Power: {self.power}\n
+        6. Combat: {self.combat}
+        """)
 
 
 class Pack():
@@ -70,3 +72,6 @@ class Deck():
 
     def count(self):
         print(f"{self.name.capitalize()} deck: {len(self.deck)}")
+
+    def draw(self):
+        return self.deck.pop(0)

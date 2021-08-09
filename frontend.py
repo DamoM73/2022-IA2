@@ -1,11 +1,20 @@
 # frontend.py
+import os
+
 
 class UI():
 
     def __init__(self):
         pass
 
+    def clear_screen(self):
+        if os.name == 'nt':
+            _ = os.system("clr")
+        else:
+            _ = os.system("clear")
+
     def main_menu(self):
+        self.clear_screen()
         print("1. Deal")
         print("2. Set pack size")
         print("9. Exit")
@@ -25,3 +34,9 @@ class UI():
             except:
                 print("Please enter a number.")
         return response
+
+    def show_card(self,card):
+        self.clear_screen()
+        print("Your card")
+        print("=========")
+        print(card.display)
