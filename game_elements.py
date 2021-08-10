@@ -15,16 +15,7 @@ class Card():
 
     
     def display(self):
-        return(f"""
-        Name: {self.name}\n
-        Publisher: {self.publisher}\n
-        1. Intelligence: {self.intelligence}\n
-        2. Strength: {self.strength}\n
-        3. Speed: {self.speed}\n
-        4. Durability: {self.durability}\n
-        5. Power: {self.power}\n
-        6. Combat: {self.combat}
-        """)
+        return(f"Name: {self.name}\nPublisher: {self.publisher}\n1. Intelligence: {self.intelligence}\n2. Strength: {self.strength}\n3. Speed: {self.speed}\n4. Durability: {self.durability}\n5. Power: {self.power}\n6. Combat: {self.combat}")
 
 
 class Pack():

@@ -9,7 +9,7 @@ class UI():
 
     def clear_screen(self):
         if os.name == 'nt':
-            _ = os.system("clr")
+            _ = os.system("cls")
         else:
             _ = os.system("clear")
 
@@ -39,4 +39,4 @@ class UI():
         self.clear_screen()
         print("Your card")
         print("=========")
-        print(card.display)
+        print(card.display())

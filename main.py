@@ -9,9 +9,7 @@ def game_play(player_deck,ai_deck):
     while len(player_deck.deck) != 0 or len(ai_deck.deck) != 0:
         player_card = player_deck.draw()
         ai_card = ai_deck.draw()
-        main_window.show_card()
-
-
+        main_window.show_card(player_card)
 
 hero_data = Database("hero_py.db","super_hero.csv")
 
@@ -27,6 +25,7 @@ while running:
     # Deal
     if response == 1:
         pack.deal(player_deck,ai_deck)
+        game_play(player_deck,ai_deck)
         player_deck.count()
         ai_deck.count()
     elif response == 2:
