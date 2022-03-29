@@ -3,6 +3,7 @@ import sqlite3
 import os
 import csv
 
+
 class SuperheroDB():
     
     def __init__(self):
@@ -95,6 +96,7 @@ class SuperheroDB():
                     aliases = hero[9]
                     pub = hero[12]
                     align = hero[13]
+                    image = str(hero[26])
                     
                     # add new published to database
                     if self.get_publisher_id(pub) == []:
@@ -108,6 +110,10 @@ class SuperheroDB():
                     pub_id = self.get_publisher_id(pub)
                     align_id = self.get_alignment_id(align)
                     
+                    # get image
+                    
+                    
+                    '''
                     # add superhero to Superhero table
                     self.add_superhero((name,
                                         intel,
@@ -116,10 +122,10 @@ class SuperheroDB():
                                         dura,
                                         power,
                                         combat,
-                                        aliases,
+                                        image,
                                         pub_id,
                                         align_id))
-                    
+                    '''
                     
                     
                     
@@ -192,11 +198,11 @@ class SuperheroDB():
                                 combat,
                                 image,
                                 publisher,
-                                alignment,
+                                alignment
                                 )
                             VALUES (?,?,?,?,?,?,?,?,?,?);"""
         data_tuple = (vals)
         
-        self.cursor.execute(insert_with_param,[data_tuple])
+        self.cursor.execute(insert_with_param,data_tuple)
         self.conn.commit()
         
