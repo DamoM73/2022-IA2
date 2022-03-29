@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import csv
 
 class SuperheroDB():
     
@@ -16,6 +17,7 @@ class SuperheroDB():
             self.conn = sqlite3.connect(self.filename)
             self.cursor = self.conn.cursor()
             self.create_superhero_db()
+            self.populate_superhero_db()
         else:
             # if db is present connect to it
             self.conn = sqlite3.connect(self.filename)
@@ -23,6 +25,9 @@ class SuperheroDB():
         
     
     def create_superhero_db(self):
+        """
+        Creates the data structure for the superhero database
+        """
         # create publisher table
         self.cursor.execute("""
                             CREATE TABLE Publisher(
@@ -66,3 +71,13 @@ class SuperheroDB():
                                 name TEXT NOT NULL                                
                             )
                             """)
+
+
+    def populate_superhero_db(self):
+        """
+        Loads values from superhero.csv into superhero database
+        """
+        with open("superhero.csv") as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=",")
+            for row in csv_reader:
+                print(row)
