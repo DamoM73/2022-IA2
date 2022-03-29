@@ -39,7 +39,7 @@ class SuperheroDB():
         
         # create alignment table
         self.cursor.execute("""
-                            CREATE TABLE alignmnet(
+                            CREATE TABLE Alignment(
                                 align_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 name TEXT NOT NULL
                             )
@@ -96,10 +96,34 @@ class SuperheroDB():
                     pub = hero[12]
                     align = hero[13]
                     
-                    # write publisher details
+                    # add new published to database
                     if self.get_publisher_id(pub) == []:
                         self.add_publisher(pub)
                     
+                    # add new alignment to database
+                    if self.get_alignment_id(align) == []:
+                        self.add_alignment(align)
+                        
+                    # get foriegn keys for superhero table
+                    pub_id = self.get_publisher_id(pub)
+                    align_id = self.get_alignment_id(align)
+                    
+                    # add superhero to Superhero table
+                    self.add_superhero((name,
+                                        intel,
+                                        strgth,
+                                        speed,
+                                        dura,
+                                        power,
+                                        combat,
+                                        aliases,
+                                        pub_id,
+                                        align_id))
+                    
+                    
+                    
+                    
+    # ----- queries ----- #                
                     
     def get_publisher_id(self,pub_name):
         """"
@@ -115,12 +139,64 @@ class SuperheroDB():
         results = self.cursor.fetchall()
         return results
     
+    def get_alignment_id(self,align_name):
+        """"
+        Returns the publisher id for given publisher 
+        """
+        self.cursor.execute("""
+                            SELECT align_id
+                            FROM Alignment
+                            WHERE name = :name
+                            """,
+                            {"name":align_name}
+                            )
+        results = self.cursor.fetchall()
+        return results
+    
+    # ----- inserts ----- #
+    
     def add_publisher(self,pub_name):
         """
         Adds provided publisher to the publisher table
         """
-        insert_with_param = """INSERT INTO Publisher (pub_id, name)
-                            VALUES (?,?);"""
-        data_tuple = (1, "James")
+        insert_with_param = """INSERT INTO Publisher (name)
+                            VALUES (?);"""
+        data_tuple = (pub_name)
         
-        self.cursor.execute(insert_with_param,data_tuple)
+        self.cursor.execute(insert_with_param,[data_tuple])
+        self.conn.commit()
+
+        
+    def add_alignment(self,align_name):
+        """
+        Adds provided publisher to the publisher table
+        """
+        insert_with_param = """INSERT INTO Alignment (name)
+                            VALUES (?);"""
+        data_tuple = (align_name)
+        
+        self.cursor.execute(insert_with_param,[data_tuple])
+        self.conn.commit()
+        
+    def add_superhero(self,vals):
+        """
+        Adds provided publisher to the publisher table
+        """
+        insert_with_param = """INSERT INTO Superhero (
+                                name,
+                                intelligence,
+                                strength,
+                                speed,
+                                durability,
+                                power,
+                                combat,
+                                image,
+                                publisher,
+                                alignment,
+                                )
+                            VALUES (?,?,?,?,?,?,?,?,?,?);"""
+        data_tuple = (vals)
+        
+        self.cursor.execute(insert_with_param,[data_tuple])
+        self.conn.commit()
+        
