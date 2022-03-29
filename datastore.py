@@ -1,3 +1,4 @@
+from ctypes import alignment
 import sqlite3
 import os
 import csv
@@ -68,7 +69,9 @@ class SuperheroDB():
         self.cursor.execute("""
                             CREATE TABLE Alias(
                                 alias_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                name TEXT NOT NULL                                
+                                name TEXT NOT NULL, 
+                                superhero INTEGER,
+                                FOREIGN KEY(superhero) REFERENCES Superhero(superhero_id)                                
                             )
                             """)
 
@@ -79,5 +82,45 @@ class SuperheroDB():
         """
         with open("superhero.csv") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
-            for row in csv_reader:
-                print(row)
+            for index, hero in enumerate(csv_reader):
+                # read the values for a single hero 
+                if index > 0:
+                    name = hero[0]
+                    intel = hero[1]
+                    strgth = hero[2]
+                    speed = hero[3]
+                    dura = hero[4]
+                    power = hero[5]
+                    combat = hero[6]
+                    aliases = hero[9]
+                    pub = hero[12]
+                    align = hero[13]
+                    
+                    # write publisher details
+                    if self.get_publisher_id(pub) == []:
+                        self.add_publisher(pub)
+                    
+                    
+    def get_publisher_id(self,pub_name):
+        """"
+        Returns the publisher id for given publisher 
+        """
+        self.cursor.execute("""
+                            SELECT pub_id
+                            FROM Publisher
+                            WHERE name = :name
+                            """,
+                            {"name":pub_name}
+                            )
+        results = self.cursor.fetchall()
+        return results
+    
+    def add_publisher(self,pub_name):
+        """
+        Adds provided publisher to the publisher table
+        """
+        insert_with_param = """INSERT INTO Publisher (pub_id, name)
+                            VALUES (?,?);"""
+        data_tuple = (1, "James")
+        
+        self.cursor.execute(insert_with_param,data_tuple)
