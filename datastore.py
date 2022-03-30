@@ -2,7 +2,8 @@ from ctypes import alignment
 import sqlite3
 import os
 import csv
-
+import requests
+import shutil
 
 class SuperheroDB():
     
@@ -96,14 +97,14 @@ class SuperheroDB():
                     aliases = hero[9]
                     pub = hero[12]
                     align = hero[13]
-                    image = str(hero[26])
+                    image = hero[26]
                     
                     # add new published to database
-                    if self.get_publisher_id(pub) == []:
+                    if self.get_publisher_id(pub) == None:
                         self.add_publisher(pub)
                     
                     # add new alignment to database
-                    if self.get_alignment_id(align) == []:
+                    if self.get_alignment_id(align) == None:
                         self.add_alignment(align)
                         
                     # get foriegn keys for superhero table
@@ -111,9 +112,8 @@ class SuperheroDB():
                     align_id = self.get_alignment_id(align)
                     
                     # get image
+                    image_path = self.get_image(image)
                     
-                    
-                    '''
                     # add superhero to Superhero table
                     self.add_superhero((name,
                                         intel,
@@ -122,12 +122,28 @@ class SuperheroDB():
                                         dura,
                                         power,
                                         combat,
-                                        image,
+                                        image_path,
                                         pub_id,
                                         align_id))
-                    '''
                     
-                    
+    
+    def get_image(self, url):
+        """
+        Retrieves the bianry of an image from the url
+        """
+        
+        file_path = "./images/"+url.split("/")[-1]
+        
+        image = requests.get(url, stream = True)
+
+        if image.status_code == 200:
+            image.raw.decode_content = True
+            
+            with open(file_path,"wb") as file:
+                shutil.copyfileobj(image.raw,file)
+                
+        return file_path
+  
                     
     # ----- queries ----- #                
                     
@@ -143,7 +159,10 @@ class SuperheroDB():
                             {"name":pub_name}
                             )
         results = self.cursor.fetchall()
-        return results
+        if results == []:
+            return None
+        else:
+            return results[0][0]
     
     def get_alignment_id(self,align_name):
         """"
@@ -157,7 +176,10 @@ class SuperheroDB():
                             {"name":align_name}
                             )
         results = self.cursor.fetchall()
-        return results
+        if results == []:
+            return None
+        else:
+            return results[0][0]
     
     # ----- inserts ----- #
     
@@ -188,6 +210,7 @@ class SuperheroDB():
         """
         Adds provided publisher to the publisher table
         """
+        print(vals)
         insert_with_param = """INSERT INTO Superhero (
                                 name,
                                 intelligence,
