@@ -53,12 +53,12 @@ class SuperheroDB():
                             CREATE TABLE Superhero(
                                 super_hero_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 name TEXT NOT NULL,
-                                intelligence INTEGER NOT NULL,
-                                strength INTEGER NOT NULL,
-                                speed INTEGER NOT NULL,
-                                durability INTEGER NOT NULL,
-                                power INTEGER NOT NULL,
-                                combat INTEGER NOT NULL,
+                                intelligence INTEGER,
+                                strength INTEGER,
+                                speed INTEGER,
+                                durability INTEGER,
+                                power INTEGER,
+                                combat INTEGER,
                                 image TEXT NOT NULL,
                                 publisher INTEGER NOT NULL,
                                 alignment INTEGER NOT NULL,
@@ -88,12 +88,12 @@ class SuperheroDB():
                 # read the values for a single hero 
                 if index > 0:
                     name = hero[0]
-                    intel = hero[1]
-                    strgth = hero[2]
-                    speed = hero[3]
-                    dura = hero[4]
-                    power = hero[5]
-                    combat = hero[6]
+                    intel = self.clean_int(hero[1])
+                    strgth = self.clean_int(hero[2])
+                    speed = self.clean_int(hero[3])
+                    dura = self.clean_int(hero[4])
+                    power = self.clean_int(hero[5])
+                    combat = self.clean_int(hero[6])
                     aliases = hero[9]
                     pub = hero[12]
                     align = hero[13]
@@ -125,6 +125,8 @@ class SuperheroDB():
                                         image_path,
                                         pub_id,
                                         align_id))
+                
+                print(f"{index+1} Superheros processed")
                     
     
     def get_image(self, url):
@@ -144,7 +146,12 @@ class SuperheroDB():
                 
         return file_path
   
-                    
+    def clean_int(self,num):
+        if num == "null":
+            return None
+        else:
+            return int(num)
+                        
     # ----- queries ----- #                
                     
     def get_publisher_id(self,pub_name):
@@ -210,7 +217,6 @@ class SuperheroDB():
         """
         Adds provided publisher to the publisher table
         """
-        print(vals)
         insert_with_param = """INSERT INTO Superhero (
                                 name,
                                 intelligence,
