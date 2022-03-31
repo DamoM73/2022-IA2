@@ -126,8 +126,10 @@ class SuperheroDB():
                                         align_id))
                     
                     # process aliases
-                    alisa_list = re.split("[a-z][A-Z]",aliases)
-                    print(alisa_list)
+                    if aliases != "-":
+                        print(self.get_alias_list(aliases))
+                        
+                    
                 
                 print(f"{index+1} records processed")
     
@@ -162,7 +164,25 @@ class SuperheroDB():
                     shutil.copyfileobj(image.raw,file)
                 
         return file_path
-                        
+    
+    
+    def get_alias_list(self,aliases):
+            alias_list = []
+            word = ""
+            for index, letter in enumerate(aliases):
+                if index != 0:
+                    if letter.isupper() and aliases[index - 1].islower():
+                        alias_list.append(word)
+                        word = letter
+                    else:
+                        word += letter
+                else:
+                    word += letter
+                    
+            return alias_list
+                    
+                    
+    
     # ----- queries ----- #
                        
     def get_publisher_id(self,pub_name):

@@ -1,12 +1,19 @@
-import requests
-import shutil
-
-url = "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg"
-
-image = requests.get(url, stream = True)
-
-if image.status_code == 200:
-    image.raw.decode_content = True
-    
-    with open("./assests/test.jpg","wb") as file:
-        shutil.copyfileobj(image.raw,file)
+def get_alias_list(aliases):
+        alias_list = []
+        word = ""
+        for index, letter in enumerate(aliases):
+            if index != 0:
+                if letter.isupper() and aliases[index - 1].islower():
+                    alias_list.append(word)
+                    word = letter
+                else:
+                    word += letter
+            else:
+                word += letter
+                
+        return alias_list
+                    
+                    
+                    
+                    
+print(get_alias_list("Laura LoganLaura HowlettLaura XTalonWolverineX23"))
