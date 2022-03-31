@@ -1,9 +1,9 @@
-from ctypes import alignment
 import sqlite3
 import os
 import csv
 import requests
 import shutil
+import re
 
 class SuperheroDB():
     
@@ -12,7 +12,6 @@ class SuperheroDB():
         """
         initialise datastore
         """
-        
         self.filename = "superhero_db.db"
         
         if not os.path.exists(self.filename):
@@ -127,7 +126,8 @@ class SuperheroDB():
                                         align_id))
                     
                     # process aliases
-                    print(aliases)
+                    alisa_list = re.split("[a-z][A-Z]",aliases)
+                    print(alisa_list)
                 
                 print(f"{index+1} records processed")
     
