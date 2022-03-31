@@ -125,35 +125,46 @@ class SuperheroDB():
                                         image_path,
                                         pub_id,
                                         align_id))
-                
-                print(f"{index+1} Superheros processed")
                     
+                    # process aliases
+                    print(aliases)
+                
+                print(f"{index+1} records processed")
+    
+                    
+    def clean_int(self,val):
+        """
+        Checks if val is a number or null
+        """
+        if val == "null":
+            return None
+        else:
+            return int(val)
+    
     
     def get_image(self, url):
         """
-        Retrieves the bianry of an image from the url
+        Retrieves the image from the url. 
+        Save it as a file is it's new.
+        returns the filename
         """
         
         file_path = "./images/"+url.split("/")[-1]
         
-        image = requests.get(url, stream = True)
-
-        if image.status_code == 200:
-            image.raw.decode_content = True
+        if not os.path.exists(file_path):
             
-            with open(file_path,"wb") as file:
-                shutil.copyfileobj(image.raw,file)
+            image = requests.get(url, stream = True)
+
+            if image.status_code == 200:
+                image.raw.decode_content = True
+                
+                with open(file_path,"wb") as file:
+                    shutil.copyfileobj(image.raw,file)
                 
         return file_path
-  
-    def clean_int(self,num):
-        if num == "null":
-            return None
-        else:
-            return int(num)
                         
-    # ----- queries ----- #                
-                    
+    # ----- queries ----- #
+                       
     def get_publisher_id(self,pub_name):
         """"
         Returns the publisher id for given publisher 
@@ -170,6 +181,7 @@ class SuperheroDB():
             return None
         else:
             return results[0][0]
+
     
     def get_alignment_id(self,align_name):
         """"
@@ -213,6 +225,7 @@ class SuperheroDB():
         self.cursor.execute(insert_with_param,[data_tuple])
         self.conn.commit()
         
+
     def add_superhero(self,vals):
         """
         Adds provided publisher to the publisher table
@@ -234,4 +247,3 @@ class SuperheroDB():
         
         self.cursor.execute(insert_with_param,data_tuple)
         self.conn.commit()
-        
