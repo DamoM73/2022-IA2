@@ -3,7 +3,6 @@ import os
 import csv
 import requests
 import shutil
-import re
 
 class SuperheroDB():
     
@@ -59,8 +58,8 @@ class SuperheroDB():
                                 power INTEGER,
                                 combat INTEGER,
                                 image TEXT NOT NULL,
-                                publisher INTEGER NOT NULL,
-                                alignment INTEGER NOT NULL,
+                                publisher INTEGER,
+                                alignment INTEGER,
                                 FOREIGN KEY(publisher) REFERENCES Publisher(pub_id),
                                 FOREIGN KEY (alignment) REFERENCES Alignment(align_id)
                             )
@@ -98,17 +97,25 @@ class SuperheroDB():
                     align = hero[13]
                     image = hero[26]
                     
-                    # add new published to database
-                    if self.get_publisher_id(pub) == None:
-                        self.add_publisher(pub)
+                    # add new published to database and get foreign key
+                    if pub != "null" and pub != "":
+                        # hero has publisher
+                        if self.get_publisher_id(pub) == None:
+                            self.add_publisher(pub)
+                        pub_id = self.get_publisher_id(pub)
+                    else:
+                        # hero doesn't have publisher
+                        pub_id = None
                     
-                    # add new alignment to database
-                    if self.get_alignment_id(align) == None:
-                        self.add_alignment(align)
-                        
-                    # get foriegn keys for superhero table
-                    pub_id = self.get_publisher_id(pub)
-                    align_id = self.get_alignment_id(align)
+                    # add new alignment to database and get foreign key
+                    if align != "null" and align != "-":
+                        # hero has alignment
+                        if self.get_alignment_id(align) == None:
+                            self.add_alignment(align)
+                        align_id = self.get_alignment_id(align)
+                    else:
+                        # hero doesn't have alignment
+                        align_id = None
                     
                     # get image
                     image_path = self.get_image(image)
@@ -127,7 +134,10 @@ class SuperheroDB():
                     
                     # process aliases
                     if aliases != "-":
-                        print(self.get_alias_list(aliases))
+                        sh_id = self.get_last_superhero_id()
+                        for alias in self.get_alias_list(aliases):
+                            self.add_alias((alias,sh_id))
+                            
                         
                     
                 
@@ -220,6 +230,15 @@ class SuperheroDB():
         else:
             return results[0][0]
     
+    
+    def get_last_superhero_id(self):
+        self.cursor.execute("""
+                            SELECT MAX(super_hero_id)
+                            FROM Superhero
+                            """)
+        results = self.cursor.fetchone()
+        return results[0]
+    
     # ----- inserts ----- #
     
     def add_publisher(self,pub_name):
@@ -236,7 +255,7 @@ class SuperheroDB():
         
     def add_alignment(self,align_name):
         """
-        Adds provided publisher to the publisher table
+        Adds provided alignment to the publisher table
         """
         insert_with_param = """INSERT INTO Alignment (name)
                             VALUES (?);"""
@@ -266,4 +285,15 @@ class SuperheroDB():
         data_tuple = (vals)
         
         self.cursor.execute(insert_with_param,data_tuple)
+        self.conn.commit()
+        
+    
+    def add_alias(self,vals):
+        """
+        Adds provided publisher to the publisher table
+        """
+        insert_with_param = """INSERT INTO Alias (name,superhero)
+                            VALUES (?,?);"""
+        
+        self.cursor.execute(insert_with_param,(vals))
         self.conn.commit()
