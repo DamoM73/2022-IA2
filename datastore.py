@@ -239,6 +239,13 @@ class SuperheroDB():
         results = self.cursor.fetchone()
         return results[0]
     
+    def get_card_details(self, superhero_id):
+        self.cursor.execute("""
+                            SELECT Superhero.name, intelligence, strength,
+                            speed, durability, power, combat, image
+                            FROM 
+                            """)
+    
     # ----- inserts ----- #
     
     def add_publisher(self,pub_name):
