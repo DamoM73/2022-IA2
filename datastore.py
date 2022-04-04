@@ -192,8 +192,7 @@ class SuperheroDB():
             return alias_list
                     
                     
-    
-    # ----- queries ----- #
+        # ----- queries ----- #
                        
     def get_publisher_id(self,pub_name):
         """"
@@ -239,13 +238,67 @@ class SuperheroDB():
         results = self.cursor.fetchone()
         return results[0]
     
+    
     def get_card_details(self, superhero_id):
         self.cursor.execute("""
-                            SELECT Superhero.name, intelligence, strength,
-                            speed, durability, power, combat, image
-                            FROM 
-                            """)
+                            SELECT Superhero.name, intelligence, strength, speed, durability, 
+                            power, combat, image, Publisher.name, Alignment.name
+                            FROM Superhero
+                            LEFT JOIN Publisher
+                            ON Superhero.publisher = Publisher.pub_id 
+                            LEFT JOIN Alignment
+                            ON Superhero.alignment = Alignment.align_id
+                            WHERE Superhero.super_hero_id = :sh_id
+                            """,
+                            {"sh_id":superhero_id})
+        results = self.cursor.fetchone()
+        card_values = list(results)
+        card_values.append(self.get_aliases(superhero_id))
+        return card_values
+        
+        
+    def get_aliases(self, superhero_id):
+        """
+        returns the aliases of the provided superhero
+        in a single string
+        """
+        self.cursor.execute("""
+                            SELECT name
+                            FROM Alias
+                            WHERE superhero = :sh_id
+                            """,
+                            {"sh_id":superhero_id})
+        results = self.cursor.fetchall()
+        if results != []:
+            aliases = ""
+            for name in results:
+                aliases = aliases + name[0] + ", "
+            return aliases.rstrip(", ")
+        else:
+            return None
+            
     
+    def get_max_cards(self):
+        """
+        Returns the max number of cards excluding all blanks
+        """
+        total_cards = self.get_last_superhero_id()
+        
+        self.cursor.execute("""
+                            SELECT COUNT(name)
+                            FROM Superhero
+                            WHERE intelligence is NULL AND
+                            strength is NULL AND
+                            speed is NULL AND
+                            durability is NULL AND
+                            power is NULL AND
+                            combat is NULL
+                            """)
+        results = self.cursor.fetchone()
+        available_cards = total_cards - results[0]
+        return(available_cards)
+        
+        
     # ----- inserts ----- #
     
     def add_publisher(self,pub_name):
