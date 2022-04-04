@@ -92,7 +92,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -305,7 +305,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="player_name_lb_2">
+   <widget class="QLabel" name="ai_name_lb">
     <property name="geometry">
      <rect>
       <x>710</x>
@@ -458,7 +458,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="player_intel_lb_2">
+         <widget class="QLabel" name="ai_intel_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -474,7 +474,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_str_lb_2">
+         <widget class="QLabel" name="ai_str_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -490,7 +490,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_spd_lb_2">
+         <widget class="QLabel" name="ai_spd_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -506,7 +506,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_combat_lb_2">
+         <widget class="QLabel" name="ai_combat_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -522,7 +522,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_dura_lb_2">
+         <widget class="QLabel" name="ai_dura_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -538,7 +538,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_pwr_lb_2">
+         <widget class="QLabel" name="ai_pwr_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -583,36 +583,11 @@
    <zorder>frame</zorder>
    <zorder>player_img_lb</zorder>
    <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_7</zorder>
-   <zorder>label_8</zorder>
-   <zorder>label_9</zorder>
    <zorder>player_name_lb</zorder>
-   <zorder>player_intel_btn</zorder>
-   <zorder>player_str_btn</zorder>
-   <zorder>player_spd_btn</zorder>
-   <zorder>player_dura_btn</zorder>
-   <zorder>player_pwr_btn</zorder>
-   <zorder>player_combat_btn</zorder>
-   <zorder>player_intel_lb</zorder>
-   <zorder>player_str_lb</zorder>
-   <zorder>player_spd_lb</zorder>
-   <zorder>player_dura_lb</zorder>
-   <zorder>player_pwr_lb</zorder>
-   <zorder>player_combat_lb</zorder>
    <zorder>ai_img_lb</zorder>
-   <zorder>player_name_lb_2</zorder>
+   <zorder>ai_name_lb</zorder>
    <zorder>frame_2</zorder>
    <zorder>label_3</zorder>
-   <zorder>label_8</zorder>
-   <zorder>label_7</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_4</zorder>
-   <zorder>label</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

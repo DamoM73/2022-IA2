@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'smuc.ui'
+# Form implementation generated from reading ui file 'c:\GIT\2022-IA2\smuc.ui'
 #
 # Created by: PyQt6 UI code generator 6.2.3
 #
@@ -328,13 +328,3 @@ class Ui_MainWindow(object):
         self.ai_dura_lb.setText(_translate("MainWindow", "###"))
         self.ai_pwr_lb.setText(_translate("MainWindow", "###"))
         self.label_3.setText(_translate("MainWindow", "Computer"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
