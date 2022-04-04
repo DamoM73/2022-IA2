@@ -35,9 +35,8 @@ class MainWindow:
             self.player_hand.append(self.pack.pop(0))
             self.ai_hand.append(self.pack.pop(0))
             
-        # display cards
-        self.display_player_card(self.player_hand[0])
-        self.display_ai_card(self.ai_hand[0])
+        self.update_display()
+        
         
         
     def establish_poss_cards(self):
@@ -81,6 +80,21 @@ class MainWindow:
         ai_img = QPixmap(card.image).scaledToHeight(320)
         self.ui.ai_img_lb.setPixmap(ai_img)
 
+
+    def update_display(self):
+        """
+        Refreshes the display
+        """
+        # top cards
+        self.display_player_card(self.player_hand[0])
+        self.display_ai_card(self.ai_hand[0])
+        
+        # update deck numbers
+        self.ui.player_hand_lb.setText(str(len(self.player_hand)))
+        self.ui.ai_hand_lb.setText(str(len(self.ai_hand)))
+        
+    
+    
     def show(self):
         self.main_win.show()
 

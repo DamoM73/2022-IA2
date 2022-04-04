@@ -35,7 +35,7 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>471</width>
+      <width>371</width>
       <height>51</height>
      </rect>
     </property>
@@ -49,7 +49,7 @@
      <string>Player</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="player_name_lb">
@@ -71,7 +71,7 @@
      <string>Super Hero Name</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
     </property>
    </widget>
    <widget class="QFrame" name="frame">
@@ -324,7 +324,7 @@
      <string>Super Hero Name</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
     </property>
    </widget>
    <widget class="QFrame" name="frame_2">
@@ -563,7 +563,7 @@
      <rect>
       <x>710</x>
       <y>20</y>
-      <width>471</width>
+      <width>361</width>
       <height>51</height>
      </rect>
     </property>
@@ -577,7 +577,51 @@
      <string>Computer</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="player_hand_lb">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>20</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Eras Demi ITC</family>
+      <pointsize>30</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>###</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ai_hand_lb">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>20</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Eras Demi ITC</family>
+      <pointsize>30</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>###</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <zorder>frame</zorder>
@@ -588,6 +632,8 @@
    <zorder>ai_name_lb</zorder>
    <zorder>frame_2</zorder>
    <zorder>label_3</zorder>
+   <zorder>player_hand_lb</zorder>
+   <zorder>ai_hand_lb</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
