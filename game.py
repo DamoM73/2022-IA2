@@ -6,26 +6,32 @@ class Card():
             self.intel = 0
         else:
             self.intel = vals[1]
+        
         if vals[2] == None:
             self.strength = 0
         else:
             self.strength = vals[2]
+        
         if vals[3] == None:
             self.speed = 0
         else:    
             self.speed = vals[3]
+        
         if vals[4] == None:
             self.durability = 0   
         else:
             self.durability = vals[4]
+        
         if vals[5] == None:
             self.power = 0
         else:
             self.power = vals[5]
+        
         if vals[6] == None:
             self.combat = 0    
         else:
             self.combat = vals[6]
+        
         self.image = vals[7]
         self.publisher = vals[8]
         self.alignment = vals[9]
