@@ -237,22 +237,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="player_combat_lb">
-          <property name="font">
-           <font>
-            <family>Eras Demi ITC</family>
-            <pointsize>20</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>###</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="player_dura_lb">
           <property name="font">
            <font>
@@ -270,6 +254,22 @@
         </item>
         <item>
          <widget class="QLabel" name="player_pwr_lb">
+          <property name="font">
+           <font>
+            <family>Eras Demi ITC</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>###</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="player_combat_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>
@@ -506,22 +506,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="ai_combat_lb">
-          <property name="font">
-           <font>
-            <family>Eras Demi ITC</family>
-            <pointsize>20</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>###</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="ai_dura_lb">
           <property name="font">
            <font>
@@ -539,6 +523,22 @@
         </item>
         <item>
          <widget class="QLabel" name="ai_pwr_lb">
+          <property name="font">
+           <font>
+            <family>Eras Demi ITC</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>###</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ai_combat_lb">
           <property name="font">
            <font>
             <family>Eras Demi ITC</family>

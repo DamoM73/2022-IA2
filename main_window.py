@@ -83,6 +83,7 @@ class MainWindow:
             
     
     def display_player_card(self,card):
+        card.show_card_details()
         self.ui.player_name_lb.setText(card.name)
         self.ui.player_intel_lb.setText(str(card.intel))
         self.ui.player_str_lb.setText(str(card.strength))
@@ -150,7 +151,7 @@ class MainWindow:
         self.ui.player_intel_btn.clicked.connect(lambda: self.compare("intel"))
         self.ui.player_str_btn.clicked.connect(lambda: self.compare("str"))
         self.ui.player_spd_btn.clicked.connect(lambda: self.compare("spd"))
-        #self.ui.player_dura_btn.clicked.connect(lambda: self.compare("dura"))
+        self.ui.player_dura_btn.clicked.connect(lambda: self.compare("dura"))
         self.ui.player_pwr_btn.clicked.connect(lambda: self.compare("pwr"))
         self.ui.player_combat_btn.clicked.connect(lambda: self.compare("combat"))
     
@@ -165,6 +166,7 @@ class MainWindow:
         # calcualte winner
         player_card = self.player_hand.pop(0)
         ai_card = self.ai_hand.pop(0)
+        player_card.show_card_details()
         match stat:
             case "intel":
                 result = self.compare_stat(player_card.intel, ai_card.intel)
