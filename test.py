@@ -1,5 +1,3 @@
-from datastore import SuperheroDB
+lst = [1,2,3,4,5,6]
 
-super_heros = SuperheroDB()
-
-super_heros.get_max_cards()
+print(lst[:3])

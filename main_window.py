@@ -6,7 +6,7 @@ from ui_smuc import Ui_MainWindow
 from datastore import SuperheroDB
 from game import Card
 import random
-import time
+
 
 
 class MainWindow:
@@ -33,7 +33,9 @@ class MainWindow:
         self.deal_hands()
         
         # game state variables
+        self.diffculty = "med"
         self.reveal = False
+        self.player_turn = True
                 
         # change display
         self.update_display()
@@ -80,9 +82,11 @@ class MainWindow:
             self.player_hand.append(self.pack.pop(0))
             self.ai_hand.append(self.pack.pop(0))
         
-            
-    
+             
     def display_player_card(self,card):
+        """
+        Updates the player card details in UI
+        """
         card.show_card_details()
         self.ui.player_name_lb.setText(card.name)
         self.ui.player_intel_lb.setText(str(card.intel))
@@ -96,6 +100,9 @@ class MainWindow:
         
         
     def display_ai_card(self,card):
+        """
+        Updates the computer's card detailsin UI
+        """
         if self.reveal:
             self.ui.ai_name_lb.setText(card.name)
             self.ui.ai_intel_lb.setText(str(card.intel))
@@ -151,6 +158,20 @@ class MainWindow:
             return True
         else:
             return False
+        
+    def ai_turn(self):
+        match self.diffculty:
+            case "easy":
+                stats = self.ai_hand[0].stat_order
+                stat = random.choice(stats)
+            case "med":
+                stats = self.ai_hand[0].stat_order[:3]
+                stat = random.choice(stats)
+            case "hard":
+                stat = self.ai_hand[0].stat_order[0]
+        
+        self.compare(stat)    
+     
     
     def show(self):
         self.main_win.show()
@@ -161,10 +182,10 @@ class MainWindow:
         Connects the UI buttons to the corresponding functions (see slots)
         """
         self.ui.player_intel_btn.clicked.connect(lambda: self.compare("intel"))
-        self.ui.player_str_btn.clicked.connect(lambda: self.compare("str"))
-        self.ui.player_spd_btn.clicked.connect(lambda: self.compare("spd"))
-        self.ui.player_dura_btn.clicked.connect(lambda: self.compare("dura"))
-        self.ui.player_pwr_btn.clicked.connect(lambda: self.compare("pwr"))
+        self.ui.player_str_btn.clicked.connect(lambda: self.compare("strength"))
+        self.ui.player_spd_btn.clicked.connect(lambda: self.compare("speed"))
+        self.ui.player_dura_btn.clicked.connect(lambda: self.compare("durability"))
+        self.ui.player_pwr_btn.clicked.connect(lambda: self.compare("power"))
         self.ui.player_combat_btn.clicked.connect(lambda: self.compare("combat"))
     
         
@@ -181,16 +202,22 @@ class MainWindow:
         
         match stat:
             case "intel":
+                self.ui.stat_lb.setText("Intelligence")
                 result = self.compare_stat(player_card.intel, ai_card.intel)
-            case "str":
+            case "strength":
+                self.ui.stat_lb.setText("Strength")
                 result = self.compare_stat(player_card.strength, ai_card.strength)
-            case "spd":
+            case "speed":
+                self.ui.stat_lb.setText("Speed")
                 result = self.compare_stat(player_card.speed, ai_card.speed)
-            case "dura":
+            case "durability":
+                self.ui.stat_lb.setText("Durability")
                 result = self.compare_stat(player_card.durability, ai_card.durability)
-            case "pwr":
+            case "power":
+                self.ui.stat_lb.setText("Power")
                 result = self.compare_stat(player_card.power, ai_card.power)
             case "combat":
+                self.ui.stat_lb.setText("Combat")
                 result = self.compare_stat(player_card.combat, ai_card.combat)            
         
         # exchange cards
@@ -202,6 +229,7 @@ class MainWindow:
                 if len(self.kitty) > 0:
                     self.player_hand.extend(self.kitty)
                     self.kitty = []
+                self.player_turn = True
             case "ai":
                 self.ui.win_lb.setText("Computer")
                 self.ai_hand.append(ai_card)
@@ -209,25 +237,33 @@ class MainWindow:
                 if len(self.kitty) > 0:
                     self.ai_hand.extend(self.kitty)
                     self.kitty = []
+                self.player_turn = False
             case "draw":
                 self.ui.win_lb.setText("Draw")
                 self.kitty.append(player_card)
                 self.kitty.append(ai_card)
-        
-        
         QTest.qWait(2000)
+        
         # allow for win condition
         if self.check_for_win():
+            QTest.qWait(10000)
             self.pack = self.get_game_pack()
+            self.player_turn = True
             self.player_hand = []
             self.ai_hand = []
             self.kitty = []
+            self.ui.victory_lb.setText("")
             self.deal_hands()
         
         # next card
+        self.ui.stat_lb.setText("")
         self.ui.win_lb.setText("")
         self.reveal = False
         self.update_display()
+        
+        # check for computer turn
+        if not self.player_turn:
+            self.ai_turn()
                
 
 if __name__ == '__main__':
