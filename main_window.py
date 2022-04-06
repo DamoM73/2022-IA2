@@ -23,7 +23,7 @@ class MainWindow:
         self.deck = self.establish_poss_cards()
         
         # create game pack
-        self.pack_size = 10
+        self.pack_size = 20
         self.pack = self.get_game_pack()
             
         # deal hands
@@ -129,6 +129,7 @@ class MainWindow:
         # update deck numbers
         self.ui.player_hand_lb.setText(str(len(self.player_hand)))
         self.ui.ai_hand_lb.setText(str(len(self.ai_hand)))
+        self.ui.kitty_lb.setText(str(len(self.kitty)))
             
     
     def compare_stat(self, player, ai):
@@ -139,6 +140,17 @@ class MainWindow:
             return "ai"
         else:
             return "draw"
+    
+    
+    def check_for_win(self):
+        if len(self.ai_hand) == 0:
+            self.ui.victory_lb.setText("Player")
+            return True
+        elif len(self.player_hand) == 0:
+            self.ui.victory_lb.setText("Computer")
+            return True
+        else:
+            return False
     
     def show(self):
         self.main_win.show()
@@ -161,12 +173,12 @@ class MainWindow:
         # show ai card
         self.reveal = True
         self.update_display()
-        QTest.qWait(1000)
         
         # calcualte winner
         player_card = self.player_hand.pop(0)
         ai_card = self.ai_hand.pop(0)
         player_card.show_card_details()
+        
         match stat:
             case "intel":
                 result = self.compare_stat(player_card.intel, ai_card.intel)
@@ -179,28 +191,44 @@ class MainWindow:
             case "pwr":
                 result = self.compare_stat(player_card.power, ai_card.power)
             case "combat":
-                result = self.compare_stat(player_card.combat, ai_card.combat)
-            
-            
+                result = self.compare_stat(player_card.combat, ai_card.combat)            
         
         # exchange cards
         match result:
             case "player":
+                self.ui.win_lb.setText("Player")
                 self.player_hand.append(player_card)
                 self.player_hand.append(ai_card)
+                if len(self.kitty) > 0:
+                    self.player_hand.extend(self.kitty)
+                    self.kitty = []
             case "ai":
+                self.ui.win_lb.setText("Computer")
                 self.ai_hand.append(ai_card)
                 self.ai_hand.append(player_card)
+                if len(self.kitty) > 0:
+                    self.ai_hand.extend(self.kitty)
+                    self.kitty = []
             case "draw":
+                self.ui.win_lb.setText("Draw")
                 self.kitty.append(player_card)
                 self.kitty.append(ai_card)
         
+        
+        QTest.qWait(2000)
+        # allow for win condition
+        if self.check_for_win():
+            self.pack = self.get_game_pack()
+            self.player_hand = []
+            self.ai_hand = []
+            self.kitty = []
+            self.deal_hands()
+        
         # next card
+        self.ui.win_lb.setText("")
         self.reveal = False
         self.update_display()
                
-                
-        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
