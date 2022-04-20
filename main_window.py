@@ -8,7 +8,6 @@ from game import Card
 import random
 
 
-
 class MainWindow:
     def __init__(self):
         # creating main window
