@@ -177,6 +177,11 @@ class SuperheroDB():
     
     
     def get_alias_list(self,aliases):
+            '''
+            Breaks down the alias string into a elements of a list
+            A new value is identified by a upper case letter preceeded
+            by a lower case letter
+            '''
             alias_list = []
             word = ""
             for index, letter in enumerate(aliases):
@@ -192,7 +197,7 @@ class SuperheroDB():
             return alias_list
                     
                     
-        # ----- queries ----- #
+    # ----- queries ----- #
                        
     def get_publisher_id(self,pub_name):
         """"
@@ -214,7 +219,7 @@ class SuperheroDB():
     
     def get_alignment_id(self,align_name):
         """"
-        Returns the publisher id for given publisher 
+        Returns the alignment id for given alignment 
         """
         self.cursor.execute("""
                             SELECT align_id
@@ -231,6 +236,9 @@ class SuperheroDB():
     
     
     def get_last_superhero_id(self):
+        '''
+        returns the id of the last superhero
+        '''
         self.cursor.execute("""
                             SELECT MAX(super_hero_id)
                             FROM Superhero
@@ -240,6 +248,9 @@ class SuperheroDB():
     
     
     def get_card_details(self, superhero_id):
+        '''
+        returns the values of a card in the form of a list
+        '''
         self.cursor.execute("""
                             SELECT Superhero.name, intelligence, strength, speed, durability, 
                             power, combat, image, Publisher.name, Alignment.name

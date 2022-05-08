@@ -9,13 +9,16 @@ import random
 
 
 class MainWindow:
+    '''
+    The control module
+    '''
     def __init__(self):
         # creating main window
         self.main_win = QMainWindow()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.main_win)
         
-        # create databases
+        # create database
         self.shdb = SuperheroDB()
         
         # establish all possible cards
@@ -54,7 +57,7 @@ class MainWindow:
     
     def get_game_pack(self):
         """
-        Draws required number of cards to form pack
+        Draws required number of cards to from pack
         Establishes the ranking of card's stats
         """
         # generate pack
@@ -65,6 +68,7 @@ class MainWindow:
             if not card.all_blank():
                 temp_pack.append(card)
             index += 1
+        
         # establish ranking
         for card in temp_pack:
             card.get_rankings(temp_pack)
@@ -100,7 +104,7 @@ class MainWindow:
         
     def display_ai_card(self,card):
         """
-        Updates the computer's card detailsin UI
+        Updates the computer's card details in UI
         """
         if self.reveal:
             self.ui.ai_name_lb.setText(card.name)
@@ -139,6 +143,9 @@ class MainWindow:
             
     
     def compare_stat(self, player, ai):
+        '''
+        Compares the two stats, and returns who wins
+        '''
         print(player,ai)
         if player > ai:
             return "player"
@@ -159,14 +166,21 @@ class MainWindow:
             return False
         
     def ai_turn(self):
+        '''
+        AI chooses a stat from a range of options which is determine
+        by the difficulty
+        '''
         match self.diffculty:
             case "easy":
+                # choose stat from all stats
                 stats = self.ai_hand[0].stat_order
                 stat = random.choice(stats)
             case "med":
+                # choose stat from three top ranked stats
                 stats = self.ai_hand[0].stat_order[:3]
                 stat = random.choice(stats)
             case "hard":
+                # choose the top ranked stat
                 stat = self.ai_hand[0].stat_order[0]
         
         self.compare(stat)    
@@ -194,11 +208,12 @@ class MainWindow:
         self.reveal = True
         self.update_display()
         
-        # calcualte winner
+        # draw cards
         player_card = self.player_hand.pop(0)
         ai_card = self.ai_hand.pop(0)
         player_card.show_card_details()
         
+        # compare to selected stat on both cards
         match stat:
             case "intel":
                 self.ui.stat_lb.setText("Intelligence")
@@ -219,7 +234,7 @@ class MainWindow:
                 self.ui.stat_lb.setText("Combat")
                 result = self.compare_stat(player_card.combat, ai_card.combat)            
         
-        # exchange cards
+        # respond to hand outcome
         match result:
             case "player":
                 self.ui.win_lb.setText("Player")
